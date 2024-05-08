@@ -98,7 +98,10 @@
 #[macro_use]
 extern crate log;
 
-use std::fmt::{self, Debug, Formatter};
+use std::{
+    fmt::{self, Debug, Formatter},
+    net::SocketAddr,
+};
 
 #[cfg(any(feature = "use-rustls", feature = "websocket"))]
 use std::sync::Arc;
@@ -369,6 +372,7 @@ impl From<ClientConfig> for TlsConfiguration {
 pub struct NetworkOptions {
     tcp_send_buffer_size: Option<u32>,
     tcp_recv_buffer_size: Option<u32>,
+    bind_address: Option<SocketAddr>,
     #[cfg(any(target_os = "android", target_os = "fuchsia", target_os = "linux"))]
     bind_device: Option<String>,
 }
@@ -378,6 +382,7 @@ impl NetworkOptions {
         NetworkOptions {
             tcp_send_buffer_size: None,
             tcp_recv_buffer_size: None,
+            bind_address: None,
             #[cfg(any(target_os = "android", target_os = "fuchsia", target_os = "linux"))]
             bind_device: None,
         }
@@ -389,6 +394,12 @@ impl NetworkOptions {
 
     pub fn set_tcp_recv_buffer_size(&mut self, size: u32) {
         self.tcp_recv_buffer_size = Some(size);
+    }
+
+    /// bind connection to a specific socket address
+    pub fn set_bind_address(&mut self, bind_address: SocketAddr) -> std::io::Result<()> {
+        self.bind_address = Some(bind_address);
+        Ok(())
     }
 
     /// bind connection to a specific network device by name

@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * `connection_timeout()` and `set_connection_timeout()` method on (non-v5) `MqttOptions`.
 * `network_options()` method on (non-v5) `MqttOptions` on to instead `EventLoop.network_options()`.
 * `set_network_options()` method on (non-v5) `MqttOptions` on to instead `EventLoop.set_network_options()`.
+* `bind_address` on `NetworkOptions` to enable `TCPSocket.bind()`
 
 ### Changed
 
